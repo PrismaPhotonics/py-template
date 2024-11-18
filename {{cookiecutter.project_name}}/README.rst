@@ -4,34 +4,33 @@
 {%- endmacro -%}
 {{ heading(cookiecutter.friendly_name) }}
 
-|PyPI| |Status| |Python Version| |License|
+|Tests| |Codecov| |Release| |Secret Scanning| |pre-commit|
 
-|Tests| |Codecov| |pre-commit| |Black|
-
-.. |PyPI| image:: https://img.shields.io/pypi/v/{{cookiecutter.project_name}}.svg
-   :target: https://pypi.org/project/{{cookiecutter.project_name}}/
-   :alt: PyPI
 .. |Status| image:: https://img.shields.io/pypi/status/{{cookiecutter.project_name}}.svg
    :target: https://pypi.org/project/{{cookiecutter.project_name}}/
    :alt: Status
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/{{cookiecutter.project_name}}
    :target: https://pypi.org/project/{{cookiecutter.project_name}}
    :alt: Python Version
-.. |License| image:: https://img.shields.io/pypi/l/{{cookiecutter.project_name}}
-   :target: https://opensource.org/licenses/{{cookiecutter.license}}
-   :alt: License
 .. |Tests| image:: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/workflows/Tests/badge.svg
    :target: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/actions?workflow=Tests
    :alt: Tests
 .. |Codecov| image:: https://codecov.io/gh/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/branch/main/graph/badge.svg
    :target: https://app.codecov.io/gh/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}
    :alt: Codecov
+.. |Release| image:: https://github.com/PrismaPhotonics/test-package/workflows/Release/badge.svg
+   :target: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/actions?workflow=Release
+   :alt: Release
+.. |Secret Scanning| image:: https://github.com/PrismaPhotonics/test-package/workflows/Secret%20Scanning/badge.svg
+   :target: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/actions?workflow=Secret%20Scanning
+   :alt: Secret Scanning
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
    :target: https://github.com/pre-commit/pre-commit
    :alt: pre-commit
-.. |Black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :target: https://github.com/psf/black
-   :alt: Black
+.. |Ruff| image:: https://img.shields.io/badge/code%20style-ruff-000000.svg
+   :target: https://github.com/charliermarsh/ruff
+   :alt: Ruff
+
 
 
 Features
@@ -49,10 +48,11 @@ Requirements
 Installation
 ------------
 
-You can install *{{cookiecutter.friendly_name}}* via pip_ from PyPI_:
+You can install *{{cookiecutter.friendly_name}}* via pip_ from `AWS CodeArtifact`_:
 
-.. code:: console
+.. code-block:: console
 
+   $ aws codeartifact login --tool pip --domain DOMAIN --domain-owner 111122223333 --repository {{cookiecutter.project_name}}
    $ pip install {{cookiecutter.project_name}}
 
 
@@ -82,7 +82,7 @@ please `file an issue`_ along with a detailed description.
 
 
 .. _{{cookiecutter.license.replace("-", " ")}} license: https://opensource.org/licenses/{{cookiecutter.license}}
-.. _PyPI: https://pypi.org/
+.. _`AWS CodeArtifact`: https://docs.aws.amazon.com/codeartifact/latest/ug/python-configure-pip.html
 .. _file an issue: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues
 .. _pip: https://pip.pypa.io/
 .. github-only

@@ -11,7 +11,7 @@ Usage
 
 .. code:: console
 
-   $ cruft create https://github.com/iterative/py-template
+   $ cruft create https://github.com/PrismaPhotonics/py-template
 
 
 Features
@@ -19,6 +19,7 @@ Features
 
 .. features-begin
 
+- Fast Python backend with UV_
 - Test automation with Nox_
 - Linting with pre-commit_ and ruff_
 - Continuous integration with `GitHub Actions`_
@@ -28,7 +29,6 @@ Features
 - Testing with pytest_
 - Code coverage with Coverage.py_
 - Coverage reporting with Codecov_
-- Static type-checking with mypy_
 - Automated Python syntax upgrades with pyupgrade_
 - setuptools as backend, build as frontend
 
@@ -44,9 +44,9 @@ The template supports Python 3.8, 3.9, 3.10 and 3.11.
 .. _Dependabot: https://dependabot.com/
 .. _GitHub Actions: https://github.com/features/actions
 .. _Nox: https://nox.thea.codes/
+.. _UV: https://docs.astral.sh/uv/
 .. _PyPI: https://pypi.org/
 .. _Read the Docs: https://readthedocs.org/
-.. _mypy: http://mypy-lang.org/
 .. _pre-commit: https://pre-commit.com/
 .. _pytest: https://docs.pytest.org/en/latest/
 .. _pyupgrade: https://github.com/asottile/pyupgrade

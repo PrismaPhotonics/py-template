@@ -10,13 +10,13 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
-repo_url: https://github.com/iterative/{{cookiecutter.project_name}}
-repo_name: iterative/{{cookiecutter.project_name}}
+repo_url: https://github.com/PrismaPhotonics/{{cookiecutter.project_name}}
+repo_name: PrismaPhotonics/{{cookiecutter.project_name}}
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/iterative/
+      link: https://github.com/PrismaPhotonics/
 
 plugins:
   - search

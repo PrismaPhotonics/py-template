@@ -5,23 +5,16 @@ import os
 
 import nox
 
+nox.options.default_venv_backend = "uv|virtualenv"
 nox.options.reuse_existing_virtualenvs = True
-nox.options.sessions = "lint", "tests"
-locations = "src", "tests"
+nox.options.sessions = ["lint", "tests"]
 
 
-{% if cookiecutter.docs != "False" -%}
-@nox.session
-def docs(session: nox.Session) -> None:
-    session.install(".[docs]")
-    session.run("mkdocs", "build")
-
-
-{% endif -%}
 @nox.session(
-    python=["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.8", "pypy3.9", "pypy3.10"],
+    python=["3.8", "3.9", "3.10", "3.11", "3.12"],
 )
 def tests(session: nox.Session) -> None:
+    """Run tests using pytest"""
     session.install(".[tests]")
     session.run(
         "pytest",
@@ -33,32 +26,38 @@ def tests(session: nox.Session) -> None:
 
 
 @nox.session
+def fmt(session: nox.Session) -> None:
+    """Run ruff code formatting"""
+    session.install("pre-commit")
+    session.install("-e", ".[dev]")
+    session.run("pre-commit", "run", "ruff")
+
+
+@nox.session
 def lint(session: nox.Session) -> None:
+    """Run all lint checks on the project using pre-commit"""
     session.install("pre-commit")
     session.install("-e", ".[dev]")
 
     args = *(session.posargs or ("--show-diff-on-failure",)), "--all-files"
     session.run("pre-commit", "run", *args)
-    session.run("python", "-m", "mypy")
 
 
 @nox.session
 def build(session: nox.Session) -> None:
+    """Build the python package"""
     session.install("build", "setuptools", "twine")
-    session.run("python", "-m", "build")
+    session.run("uv", "build")
     dists = glob.glob("dist/*")
     session.run("twine", "check", *dists, silent=True)
 
 
 @nox.session
 def dev(session: nox.Session) -> None:
-    """Sets up a python development environment for the project."""
-    args = session.posargs or ("venv",)
+    """Set up a python development environment for the project"""
+    args = session.posargs or (".venv",)
     venv_dir = os.fsdecode(os.path.abspath(args[0]))
 
     session.log(f"Setting up virtual environment in {venv_dir}")
-    session.install("virtualenv")
-    session.run("virtualenv", venv_dir, silent=True)
-
-    python = os.path.join(venv_dir, "bin/python")
-    session.run(python, "-m", "pip", "install", "-e", ".[dev]", external=True)
+    session.run("uv", "venv", venv_dir, silent=True)
+    session.install("-e", ".[dev]", env={"VIRTUAL_ENV": venv_dir}, external=True)

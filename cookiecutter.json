@@ -2,14 +2,13 @@
     "project_name": "py-template",
     "package_name": "{{ cookiecutter.project_name.replace('-', '_') }}",
     "friendly_name": "{{ cookiecutter.project_name.replace('-', ' ').title() }}",
-    "author": "Iterative",
-    "email": "support@dvc.org",
-    "github_user": "iterative",
+    "author": "PrismaPhotonics",
+    "email": "some.one@prismaphotonics.com",
+    "github_user": "PrismaPhotonics",
     "version": "0.0.0",
     "copyright_year": "{% now 'utc', '%Y' %}",
     "license": [
-        "Apache-2.0",
-        "MIT"
+        "Copyright"
     ],
     "docs": false,
     "short_description": "",

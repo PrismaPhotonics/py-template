@@ -2,23 +2,20 @@ Contributor Guide
 =================
 
 Thank you for your interest in improving this project.
-This project is open-source under the `{{cookiecutter.license.replace("-", " ")}} license`_ and
-welcomes contributions in the form of bug reports, feature requests, and pull requests.
+-This project is close-source under the `{{cookiecutter.license}} license`_ and
+-welcomes contributions in the form of bug reports, feature requests, and pull requests.
+
 
 Here is a list of important resources for contributors:
 
 - `Source Code`_
-{%- if cookiecutter.docs != "False" %}
+- `{{cookiecutter.license}} license`_
 - `Documentation`_
-{%- endif %}
 - `Issue Tracker`_
-- `Code of Conduct`_
 
-.. _{{cookiecutter.license.replace("-", " ")}} license: https://opensource.org/licenses/{{cookiecutter.license}}
 .. _Source Code: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}
-{%- if cookiecutter.docs != "False" %}
-.. _Documentation: https://docs.iterative.ai/{{ cookiecutter.project_name }}
-{%- endif %}
+.. _`{{cookiecutter.license}} license`: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/LICENSE
+.. _Documentation: https://prismaphotonics.atlassian.net/wiki/spaces/PRISMA/overview
 .. _Issue Tracker: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues
 
 How to report a bug
@@ -49,15 +46,48 @@ How to set up your development environment
 
 You need Python 3.8+ and the following tools:
 
+- UV_
 - Nox_
 
-Install the package with development requirements:
+Install UV:
+
+- MacOS / Linux
+
+.. code:: console
+
+   $ curl -LsSf https://astral.sh/uv/install.sh | sh
+
+- Windows
+
+.. code:: console
+
+   $ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+- OSX
 
 .. code:: console
 
    $ pip install nox
 
+.. note:: UV is also available from `brew`, `winget` and other package managers.
+    See full installation instructions in UV_installation_
+
+Install the package with development requirements:
+
+.. code:: console
+
+   $ uv pip install nox
+
+.. _UV: https://docs.astral.sh/uv/
+.. _UV_installation: https://docs.astral.sh/uv/getting-started/installation/
 .. _Nox: https://nox.thea.codes/
+
+Set up a dev environment:
+
+.. code-block:: console
+
+   $ nox -s dev
+   $ source .venv/bin/activate
 
 
 How to test the project
@@ -107,9 +137,5 @@ To run linting and code formatting checks, you can invoke a `lint` session in no
 
    $ nox -s lint
 
-It is recommended to open an issue before starting work on anything.
-This will allow a chance to talk it over with the owners and validate your approach.
-
 .. _pull request: https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/pulls
 .. github-only
-.. _Code of Conduct: CODE_OF_CONDUCT.rst
