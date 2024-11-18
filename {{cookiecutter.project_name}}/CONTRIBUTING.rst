@@ -2,7 +2,7 @@ Contributor Guide
 =================
 
 Thank you for your interest in improving this project.
--This project is close-source under the `{{cookiecutter.license}} license`_ and
+-This project is under the `{{cookiecutter.license}} license`_ and
 -welcomes contributions in the form of bug reports, feature requests, and pull requests.
 
 
@@ -63,20 +63,19 @@ Install UV:
 
    $ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 
-- OSX
+.. note:: UV is also available from `brew`, `winget` and other package managers.
+    See full installation instructions in UV_installation_
+
+Install Nox globally:
 
 .. code:: console
 
    $ pip install nox
 
-.. note:: UV is also available from `brew`, `winget` and other package managers.
-    See full installation instructions in UV_installation_
-
-Install the package with development requirements:
-
-.. code:: console
-
-   $ uv pip install nox
+.. note:: You can install nox in various ways (pip, pipx, uv, uvx,
+    homebrew or other package managers). It's up to you. It's important
+    that it is available to you as an entry point to run repo management
+    commands.
 
 .. _UV: https://docs.astral.sh/uv/
 .. _UV_installation: https://docs.astral.sh/uv/getting-started/installation/
@@ -90,14 +89,8 @@ Set up a dev environment:
    $ source .venv/bin/activate
 
 
-How to test the project
------------------------
-
-Run the full test suite:
-
-.. code:: console
-
-   $ nox
+Run admin operations on the project
+-----------------------------------
 
 List the available Nox sessions:
 
@@ -105,17 +98,23 @@ List the available Nox sessions:
 
    $ nox --list-sessions
 
-You can also run a specific Nox session.
+To run specific Nox sessions (=operations).
 For example, invoke the unit test suite like this:
 
 .. code:: console
 
-   $ nox --session=tests
+   $ nox -s tests
 
 Unit tests are located in the ``tests`` directory,
 and are written using the pytest_ testing framework.
 
 .. _pytest: https://pytest.readthedocs.io/
+
+To run all available operations:
+
+.. code:: console
+
+   $ nox
 
 
 How to submit changes
