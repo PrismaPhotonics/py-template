@@ -42,10 +42,10 @@ tests = [
   "pytest-mock==3.8.2"
 ]
 dev = [
-  "{{ cookiecutter.project_name }}[tests]",
 {%- if cookiecutter.docs %}
-  "{{ cookiecutter.project_name }}[docs]"
+  "{{ cookiecutter.project_name }}[docs]",
 {%- endif %}
+  "{{ cookiecutter.project_name }}[tests]"
 ]
 
 [tool.setuptools_scm]
