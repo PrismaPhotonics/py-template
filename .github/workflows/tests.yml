@@ -32,10 +32,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup nox
-        uses: wntrblm/nox@2024.04.15
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
         with:
-          python-versions: "3.8, 3.9, 3.10, 3.11, 3.12, pypy-3.8, pypy-3.9, pypy-3.10"
+          python-version: '3.12'
+
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-suffix: lint
+          cache-dependency-glob: pyproject.toml
+
+      - name: Install nox
+        run: uv pip install nox --system
 
       - name: Generate template via cruft
         run: |
