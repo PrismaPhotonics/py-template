@@ -62,9 +62,11 @@ def dev(session: nox.Session) -> None:
     session.run("uv", "venv", venv_dir, silent=True)
     session.install("-e", ".[dev]", env={"VIRTUAL_ENV": venv_dir}, external=True)
 
-{% if cookiecutter.docs != "False" -%}
+{%- if cookiecutter.docs != "False" %}
+
+
 @nox.session
 def docs(session: nox.Session) -> None:
     session.install(".[docs]")
     session.run("mkdocs", "build")
-{% endif -%}
+{%- endif %}
