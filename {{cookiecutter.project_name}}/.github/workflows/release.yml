@@ -77,6 +77,6 @@ jobs:
           export TWINE_REPOSITORY_URL=`aws codeartifact get-repository-endpoint \
             --domain {% raw %}${{ secrets.AWS_CODEARTIFACT_DOMAIN }}{% endraw %} \
             --domain-owner {% raw %}${{ secrets.AWS_ACCOUNT_ID }}{% endraw %} \
-            --repository ${{ secrets.AWS_CODEARTIFACT_REPO }} \
+            --repository {% raw %}${{ secrets.AWS_CODEARTIFACT_REPO }}{% endraw %} \
             --format pypi --query repositoryEndpoint --output text`
           twine upload --skip-existing --verbose dist/*
