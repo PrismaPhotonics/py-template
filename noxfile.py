@@ -1,6 +1,5 @@
 """Automation using nox."""
 
-import glob
 import os
 
 import nox
@@ -39,6 +38,7 @@ def lint(session: nox.Session) -> None:
 
     args = *(session.posargs or ("--show-diff-on-failure",)), "--all-files"
     session.run("pre-commit", "run", *args)
+
 
 @nox.session
 def dev(session: nox.Session) -> None:

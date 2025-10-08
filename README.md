@@ -55,4 +55,3 @@ The test suite validates:
 - pyproject.toml configuration
 - License file generation
 - Jinja2 template rendering
-

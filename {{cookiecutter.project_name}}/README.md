@@ -43,4 +43,3 @@ Distributed under the terms of the [{{cookiecutter.license.replace("-", " ")}} l
 
 If you encounter any problems,
 please [file an issue](https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues) along with a detailed description.
-

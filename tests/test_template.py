@@ -1,4 +1,5 @@
 """Test suite for validating the py-template cookiecutter template."""
+
 import json
 import shutil
 import subprocess
@@ -40,11 +41,11 @@ def generated_project(temp_dir, template_dir):
         "short_description": "A test project",
         "development_status": "Development Status :: 3 - Alpha",
     }
-    
+
     # Write config to temp file
     config_file = temp_dir / "config.json"
     config_file.write_text(json.dumps(project_config))
-    
+
     # Run cruft create with config
     result = subprocess.run(
         [
@@ -61,10 +62,10 @@ def generated_project(temp_dir, template_dir):
         text=True,
         check=False,
     )
-    
+
     if result.returncode != 0:
         pytest.fail(f"cruft create failed: {result.stderr}")
-    
+
     project_path = temp_dir / "test-project"
     assert project_path.exists(), "Generated project directory does not exist"
     return project_path
@@ -86,10 +87,10 @@ def generated_project_no_docs(temp_dir, template_dir):
         "short_description": "A test project without docs",
         "development_status": "Development Status :: 4 - Beta",
     }
-    
+
     config_file = temp_dir / "config_nodocs.json"
     config_file.write_text(json.dumps(project_config))
-    
+
     result = subprocess.run(
         [
             "cruft",
@@ -105,10 +106,10 @@ def generated_project_no_docs(temp_dir, template_dir):
         text=True,
         check=False,
     )
-    
+
     if result.returncode != 0:
         pytest.fail(f"cruft create failed: {result.stderr}")
-    
+
     project_path = temp_dir / "test-project-nodocs"
     assert project_path.exists(), "Generated project directory does not exist"
     return project_path
@@ -129,7 +130,7 @@ class TestProjectStructure:
             "tests/__init__.py",
             "tests/test_test_project.py",
         ]
-        
+
         for file_path in required_files:
             full_path = generated_project / file_path
             assert full_path.exists(), f"Required file {file_path} does not exist"
@@ -143,7 +144,7 @@ class TestProjectStructure:
             ".github",
             ".github/workflows",
         ]
-        
+
         for dir_path in required_dirs:
             full_path = generated_project / dir_path
             assert full_path.is_dir(), f"Required directory {dir_path} does not exist"
@@ -159,7 +160,9 @@ class TestProjectStructure:
         """Test that docs files are removed when docs are disabled."""
         assert not (generated_project_no_docs / "docs").exists()
         assert not (generated_project_no_docs / "mkdocs.yml").exists()
-        assert not (generated_project_no_docs / ".github" / "workflows" / "docs.yml").exists()
+        assert not (
+            generated_project_no_docs / ".github" / "workflows" / "docs.yml"
+        ).exists()
 
     def test_license_file_created(self, generated_project):
         """Test that LICENSE file is created."""
@@ -175,10 +178,10 @@ class TestReadmeFormatting:
         readme = generated_project / "README.md"
         assert readme.exists()
         content = readme.read_text()
-        
+
         # Check for markdown heading
         assert content.startswith("# Test Project")
-        
+
         # Check for markdown badges (should contain links)
         assert "[![" in content
         assert "](https://" in content
@@ -187,7 +190,7 @@ class TestReadmeFormatting:
         """Test that README has all required sections."""
         readme = generated_project / "README.md"
         content = readme.read_text()
-        
+
         required_sections = [
             "## Features",
             "## Requirements",
@@ -197,7 +200,7 @@ class TestReadmeFormatting:
             "## License",
             "## Issues",
         ]
-        
+
         for section in required_sections:
             assert section in content, f"README missing section: {section}"
 
@@ -205,7 +208,7 @@ class TestReadmeFormatting:
         """Test that README includes CI badges."""
         readme = generated_project / "README.md"
         content = readme.read_text()
-        
+
         # Check for various badges
         assert "Tests" in content
         assert "Codecov" in content
@@ -215,7 +218,7 @@ class TestReadmeFormatting:
         """Test that no Jinja2 syntax remains in README."""
         readme = generated_project / "README.md"
         content = readme.read_text()
-        
+
         # Check that no template syntax remains
         assert "{{" not in content
         assert "}}" not in content
@@ -226,7 +229,7 @@ class TestReadmeFormatting:
         """Test that README contains the correct project name."""
         readme = generated_project / "README.md"
         content = readme.read_text()
-        
+
         assert "Test Project" in content
         assert "test-project" in content
 
@@ -239,7 +242,7 @@ class TestContributingFormatting:
         contributing = generated_project / "CONTRIBUTING.md"
         assert contributing.exists()
         content = contributing.read_text()
-        
+
         # Check for markdown heading
         assert content.startswith("# Contributor Guide")
 
@@ -247,7 +250,7 @@ class TestContributingFormatting:
         """Test that CONTRIBUTING has all required sections."""
         contributing = generated_project / "CONTRIBUTING.md"
         content = contributing.read_text()
-        
+
         required_sections = [
             "## How to report a bug",
             "## How to request a feature",
@@ -255,7 +258,7 @@ class TestContributingFormatting:
             "## Run admin operations on the project",
             "## How to submit changes",
         ]
-        
+
         for section in required_sections:
             assert section in content, f"CONTRIBUTING missing section: {section}"
 
@@ -263,7 +266,7 @@ class TestContributingFormatting:
         """Test that CONTRIBUTING includes code blocks."""
         contributing = generated_project / "CONTRIBUTING.md"
         content = contributing.read_text()
-        
+
         # Check for markdown code blocks
         assert "```console" in content
         assert "```" in content
@@ -272,7 +275,7 @@ class TestContributingFormatting:
         """Test that no Jinja2 syntax remains in CONTRIBUTING."""
         contributing = generated_project / "CONTRIBUTING.md"
         content = contributing.read_text()
-        
+
         # Check that no template syntax remains
         assert "{{" not in content
         assert "}}" not in content
@@ -287,14 +290,14 @@ class TestCIConfiguration:
         """Test that required workflow files exist."""
         workflows_dir = generated_project / ".github" / "workflows"
         assert workflows_dir.is_dir()
-        
+
         required_workflows = [
             "tests.yml",
             "release.yml",
             "secret-scanning.yaml",
             "update-template.yaml",
         ]
-        
+
         for workflow in required_workflows:
             workflow_file = workflows_dir / workflow
             assert workflow_file.exists(), f"Workflow {workflow} does not exist"
@@ -307,14 +310,14 @@ class TestCIConfiguration:
     def test_workflows_are_valid_yaml(self, generated_project):
         """Test that workflow files are valid YAML."""
         workflows_dir = generated_project / ".github" / "workflows"
-        
+
         for workflow_file in workflows_dir.glob("*.yml"):
             with open(workflow_file) as f:
                 try:
                     yaml.safe_load(f)
                 except yaml.YAMLError as e:
                     pytest.fail(f"Invalid YAML in {workflow_file.name}: {e}")
-        
+
         for workflow_file in workflows_dir.glob("*.yaml"):
             with open(workflow_file) as f:
                 try:
@@ -325,17 +328,18 @@ class TestCIConfiguration:
     def test_workflows_have_required_fields(self, generated_project):
         """Test that workflow files have required fields."""
         workflows_dir = generated_project / ".github" / "workflows"
-        
+
         for workflow_file in workflows_dir.glob("*.y*ml"):
             with open(workflow_file) as f:
                 workflow = yaml.safe_load(f)
-                
+
                 # Check for name field
                 assert "name" in workflow, f"{workflow_file.name} missing 'name' field"
-                
+
                 # Check for jobs or on field
-                assert "jobs" in workflow or "on" in workflow, \
-                    f"{workflow_file.name} missing 'jobs' or 'on' field"
+                assert (
+                    "jobs" in workflow or "on" in workflow
+                ), f"{workflow_file.name} missing 'jobs' or 'on' field"
 
 
 class TestPyprojectToml:
@@ -349,7 +353,7 @@ class TestPyprojectToml:
     def test_pyproject_has_project_section(self, generated_project):
         """Test that pyproject.toml has [project] section."""
         pyproject = generated_project / "pyproject.toml"
-        
+
         # Read as TOML (using simple parsing since tomllib is Python 3.11+)
         content = pyproject.read_text()
         assert "[project]" in content
@@ -358,7 +362,7 @@ class TestPyprojectToml:
         """Test that pyproject.toml references README.md."""
         pyproject = generated_project / "pyproject.toml"
         content = pyproject.read_text()
-        
+
         assert 'readme = "README.md"' in content
         assert 'readme = "README.rst"' not in content
 
@@ -366,7 +370,7 @@ class TestPyprojectToml:
         """Test that pyproject.toml has [build-system] section."""
         pyproject = generated_project / "pyproject.toml"
         content = pyproject.read_text()
-        
+
         assert "[build-system]" in content
         assert "setuptools" in content
 
@@ -374,7 +378,7 @@ class TestPyprojectToml:
         """Test that pyproject.toml includes test dependencies."""
         pyproject = generated_project / "pyproject.toml"
         content = pyproject.read_text()
-        
+
         assert "pytest" in content
         assert "pytest-cov" in content
 
@@ -382,7 +386,7 @@ class TestPyprojectToml:
         """Test that no Jinja2 syntax remains in pyproject.toml."""
         pyproject = generated_project / "pyproject.toml"
         content = pyproject.read_text()
-        
+
         # Check that no template syntax remains
         assert "{{" not in content
         assert "}}" not in content
@@ -401,7 +405,7 @@ class TestDependabotConfiguration:
     def test_dependabot_is_valid_yaml(self, generated_project):
         """Test that dependabot.yml is valid YAML."""
         dependabot = generated_project / ".github" / "dependabot.yml"
-        
+
         with open(dependabot) as f:
             try:
                 config = yaml.safe_load(f)
@@ -422,7 +426,7 @@ class TestCruftConfiguration:
     def test_cruft_json_is_valid(self, generated_project):
         """Test that .cruft.json is valid JSON."""
         cruft_json = generated_project / ".cruft.json"
-        
+
         with open(cruft_json) as f:
             try:
                 config = json.load(f)
@@ -441,7 +445,7 @@ class TestCruftConfiguration:
             text=True,
             check=False,
         )
-        
+
         # cruft check returns 0 if template is up to date, 1 if not
         # Both are valid states, we just want to ensure it runs without error
         assert result.returncode in [0, 1], f"cruft check failed: {result.stderr}"
@@ -473,14 +477,14 @@ class TestPackageStructure:
     def test_noxfile_is_valid_python(self, generated_project):
         """Test that noxfile.py is valid Python."""
         noxfile = generated_project / "noxfile.py"
-        
+
         result = subprocess.run(
             ["python", "-m", "py_compile", str(noxfile)],
             capture_output=True,
             text=True,
             check=False,
         )
-        
+
         assert result.returncode == 0, f"noxfile.py has syntax errors: {result.stderr}"
 
 
@@ -500,4 +504,3 @@ class TestLicenseHandling:
         assert license_file.exists()
         content = license_file.read_text()
         assert "MIT" in content
-

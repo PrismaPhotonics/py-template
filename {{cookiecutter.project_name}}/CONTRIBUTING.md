@@ -113,4 +113,3 @@ To run linting and code formatting checks, you can invoke a `lint` session in no
 ```console
 $ nox -s lint
 ```
-
