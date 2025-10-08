@@ -47,5 +47,5 @@ def dev(session: nox.Session) -> None:
     venv_dir = os.fsdecode(os.path.abspath(args[0]))
 
     session.log(f"Setting up virtual environment in {venv_dir}")
-    session.run("uv", "venv", venv_dir, silent=True)
+    session.run("uv", "venv", "--python", "3.11", venv_dir, silent=True)
     session.install("-e", ".[dev]", env={"VIRTUAL_ENV": venv_dir}, external=True)
