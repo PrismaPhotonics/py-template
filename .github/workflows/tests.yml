@@ -58,7 +58,7 @@ jobs:
           echo "::group::tree" && tree -a && echo "::endgroup::"
           echo "::group::.cruft.json" && cat .cruft.json && echo "::endgroup::"
           echo "::group::pyproject.toml" && cat pyproject.toml && echo "::endgroup::"
-          echo "::group::CONTRIBUTING.rst" && cat CONTRIBUTING.rst && echo "::endgroup::"
+          echo "::group::CONTRIBUTING.md" && cat CONTRIBUTING.md && echo "::endgroup::"
           echo "::group::noxfile.py" && cat noxfile.py && echo "::endgroup::"
           echo "::group::tests.yml" && cat .github/workflows/tests.yml && echo "::endgroup::"
 
@@ -79,32 +79,32 @@ jobs:
   python-tests:
     name: Test template generation
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[tests]"
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-suffix: python-tests
+          cache-dependency-glob: pyproject.toml
 
-      - name: Run tests
-        run: |
-          pytest tests/ -v --cov=. --cov-report=xml --cov-report=term
+      - name: Install nox
+        run: uv pip install nox --system
+
+      - name: Run unit tests
+        run: nox -s tests -- tests/ -v --cov-report=xml --cov-report=term
 
       - name: Upload coverage reports
-        if: matrix.python-version == '3.11'
         uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
-          flags: template-tests
+          flags: python-tests
           fail_ci_if_error: false
