@@ -58,7 +58,7 @@ jobs:
           echo "::group::tree" && tree -a && echo "::endgroup::"
           echo "::group::.cruft.json" && cat .cruft.json && echo "::endgroup::"
           echo "::group::pyproject.toml" && cat pyproject.toml && echo "::endgroup::"
-          echo "::group::CONTRIBUTING.rst" && cat CONTRIBUTING.rst && echo "::endgroup::"
+          echo "::group::CONTRIBUTING.md" && cat CONTRIBUTING.md && echo "::endgroup::"
           echo "::group::noxfile.py" && cat noxfile.py && echo "::endgroup::"
           echo "::group::tests.yml" && cat .github/workflows/tests.yml && echo "::endgroup::"
 
@@ -76,3 +76,35 @@ jobs:
           cd ${{ matrix.context.project_name }}
           nox
           nox -s lint build dev ${{ matrix.context.docs && 'docs'}}
+  python-tests:
+    name: Python tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-suffix: python-tests
+          cache-dependency-glob: pyproject.toml
+
+      - name: Install nox
+        run: uv pip install nox --system
+
+      - name: Run unit tests
+        run: nox -s tests -- -v --cov-report=xml --cov-report=term
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: python-tests
+          fail_ci_if_error: false

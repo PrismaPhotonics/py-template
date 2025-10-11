@@ -1,0 +1,34 @@
+name: PR Description Validator
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  validate-pr-description:
+    name: Validate PR Description
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR Description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body;
+
+            // Check if the PR body is null, undefined, or suspiciously short
+            if (!prBody || prBody.trim().length < 20) {
+              core.setFailed(
+                '❌ PR Description Validation Failed\n\n' +
+                '📝 Your pull request must include a description.\n\n' +
+                'Please add a meaningful description that explains:\n' +
+                '  • What changes were made\n' +
+                '  • Why these changes were necessary\n' +
+                '  • How to test or verify the changes\n\n' +
+                'Edit your PR description and the validation will run automatically.'
+              );
+              return;
+            }
+
+            console.log('✅ PR description validation passed!');
+            console.log(`Description length: ${prBody.trim().length} characters`);

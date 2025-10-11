@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "{{ cookiecutter.project_name }}"
 description = "{{ cookiecutter.short_description or cookiecutter.friendly_name }}"
-readme = "README.rst"
+readme = "README.md"
 license = {text = "{{ cookiecutter.license }}"}
 authors = [{name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.email }}"}]
 classifiers = [
