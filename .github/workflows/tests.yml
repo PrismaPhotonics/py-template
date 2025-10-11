@@ -77,7 +77,7 @@ jobs:
           nox
           nox -s lint build dev ${{ matrix.context.docs && 'docs'}}
   python-tests:
-    name: Test template generation
+    name: Python tests
     runs-on: ubuntu-latest
 
     steps:
@@ -100,7 +100,7 @@ jobs:
         run: uv pip install nox --system
 
       - name: Run unit tests
-        run: nox -s tests -- tests/ -v --cov-report=xml --cov-report=term
+        run: nox -s tests -- -v --cov-report=xml --cov-report=term
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4

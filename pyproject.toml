@@ -23,6 +23,16 @@ tests = [
 testpaths = ["tests"]
 addopts = "-ra -v"
 
+[tool.coverage.run]
+branch = true
+source = ["hooks", "tests"]
+
+[tool.coverage.paths]
+source = ["."]
+
+[tool.coverage.report]
+show_missing = true
+
 [tool.ruff]
 extend-exclude = ["[{][{]cookiecutter.project_name[}][}]/noxfile.py"]
 
