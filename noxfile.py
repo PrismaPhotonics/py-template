@@ -3,6 +3,7 @@
 import os
 
 import nox
+from nox.command import CommandFailed
 
 nox.options.default_venv_backend = "uv|virtualenv"
 nox.options.reuse_existing_virtualenvs = True
@@ -49,3 +50,51 @@ def dev(session: nox.Session) -> None:
     session.log(f"Setting up virtual environment in {venv_dir}")
     session.run("uv", "venv", "--python", "3.11", venv_dir, silent=True)
     session.install("-e", ".[dev]", env={"VIRTUAL_ENV": venv_dir}, external=True)
+
+
+@nox.session(name="semgrep-fast")
+def semgrep_fast(session):
+    """Fast code security + Bandit parity on Python files."""
+    try:
+        session.run("uv", "pip", "install", "semgrep", silent=True, external=True)
+    except CommandFailed:
+        session.run("uv", "pip", "install", "semgrep")
+
+    session.run(
+        "semgrep",
+        "scan",
+        "--config=p/python",
+        "--config=p/ci",
+        "--config=p/bandit",
+        "--max-target-bytes=1500000",
+        "--severity=ERROR",
+        "--error",
+        external=True,
+    )
+
+
+@nox.session(name="semgrep-all")
+def semgrep_all(session):
+    """Run all semgrep security scans in sequence."""
+    try:
+        session.run("uv", "pip", "install", "semgrep", silent=True, external=True)
+    except CommandFailed:
+        session.run("uv", "pip", "install", "semgrep")
+
+    # Run all scans
+    session.run(
+        "semgrep",
+        "scan",
+        "--config=p/ci",
+        "--config=p/python",
+        "--config=p/bandit",
+        "--config=p/secrets",
+        "--config=p/owasp-top-ten",
+        "--config=p/security-audit",
+        "--max-target-bytes=2000000",
+        "--timeout=120",
+        "--timeout-threshold=5",
+        "--severity=WARNING",
+        "--sarif-output=.reports/semgrep.sarif",
+        external=True,
+    )
