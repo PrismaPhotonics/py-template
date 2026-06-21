@@ -1,0 +1,15 @@
+name: Semgrep Scanning
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  security-events: write
+  contents: read
+  actions: read
+
+jobs:
+  semgrep:
+    uses: PrismaPhotonics/github-workflows/.github/workflows/semgrep-scanning.yaml@main
+    secrets: inherit
