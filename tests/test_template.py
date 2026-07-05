@@ -115,8 +115,11 @@ class TestProjectStructure:
             "src/test_project/__init__.py",
             "tests/__init__.py",
             "tests/test_test_project.py",
-            ".github/workflows/tests.yml",
-            ".github/workflows/release.yml",
+            ".github/workflows/tests.yaml",
+            ".github/workflows/release.yaml",
+            ".github/workflows/semgrep-scanning.yaml",
+            ".github/workflows/secret-scanning.yaml",
+            
         ]
 
         for path in essential:
@@ -130,13 +133,13 @@ class TestProjectStructure:
         # With docs enabled
         assert (generated_project / "docs").is_dir()
         assert (generated_project / "mkdocs.yml").is_file()
-        assert (generated_project / ".github" / "workflows" / "docs.yml").is_file()
+        assert (generated_project / ".github" / "workflows" / "docs.yaml").is_file()
 
         # With docs disabled
         assert not (generated_project_no_docs / "docs").exists()
         assert not (generated_project_no_docs / "mkdocs.yml").exists()
         assert not (
-            generated_project_no_docs / ".github" / "workflows" / "docs.yml"
+            generated_project_no_docs / ".github" / "workflows" / "docs.yaml"
         ).exists()
 
 
