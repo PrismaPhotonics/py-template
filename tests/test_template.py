@@ -119,7 +119,6 @@ class TestProjectStructure:
             ".github/workflows/release.yaml",
             ".github/workflows/semgrep-scanning.yaml",
             ".github/workflows/secret-scanning.yaml",
-            
         ]
 
         for path in essential:
