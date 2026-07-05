@@ -60,7 +60,7 @@ jobs:
           echo "::group::pyproject.toml" && cat pyproject.toml && echo "::endgroup::"
           echo "::group::CONTRIBUTING.md" && cat CONTRIBUTING.md && echo "::endgroup::"
           echo "::group::noxfile.py" && cat noxfile.py && echo "::endgroup::"
-          echo "::group::tests.yml" && cat .github/workflows/tests.yml && echo "::endgroup::"
+          echo "::group::tests.yaml" && cat .github/workflows/tests.yaml && echo "::endgroup::"
 
       - name: Initialize repository
         run: |

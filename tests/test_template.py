@@ -41,7 +41,7 @@ def generated_project(temp_dir, template_dir):
                     "project_name": "test-project",
                     "docs": True,
                     "short_description": "A test project",
-                }
+                },
             ),
         ],
         capture_output=True,
@@ -57,7 +57,7 @@ def generated_project(temp_dir, template_dir):
         created = list(temp_dir.iterdir())
         pytest.fail(
             f"Generated project directory does not exist at {project_path}. "
-            f"Created: {created}"
+            f"Created: {created}",
         )
     return project_path
 
@@ -78,7 +78,7 @@ def generated_project_no_docs(temp_dir, template_dir):
                 {
                     "project_name": "test-project-nodocs",
                     "docs": False,
-                }
+                },
             ),
         ],
         capture_output=True,
@@ -94,7 +94,7 @@ def generated_project_no_docs(temp_dir, template_dir):
         created = list(temp_dir.iterdir())
         pytest.fail(
             f"Generated project directory does not exist at {project_path}. "
-            f"Created: {created}"
+            f"Created: {created}",
         )
     return project_path
 
@@ -115,8 +115,10 @@ class TestProjectStructure:
             "src/test_project/__init__.py",
             "tests/__init__.py",
             "tests/test_test_project.py",
-            ".github/workflows/tests.yml",
-            ".github/workflows/release.yml",
+            ".github/workflows/tests.yaml",
+            ".github/workflows/release.yaml",
+            ".github/workflows/semgrep-scanning.yaml",
+            ".github/workflows/secret-scanning.yaml",
         ]
 
         for path in essential:
@@ -124,19 +126,21 @@ class TestProjectStructure:
             assert full_path.exists(), f"Essential path {path} does not exist"
 
     def test_docs_conditional_generation(
-        self, generated_project, generated_project_no_docs
+        self,
+        generated_project,
+        generated_project_no_docs,
     ):
         """Test that docs are included/excluded based on configuration."""
         # With docs enabled
         assert (generated_project / "docs").is_dir()
         assert (generated_project / "mkdocs.yml").is_file()
-        assert (generated_project / ".github" / "workflows" / "docs.yml").is_file()
+        assert (generated_project / ".github" / "workflows" / "docs.yaml").is_file()
 
         # With docs disabled
         assert not (generated_project_no_docs / "docs").exists()
         assert not (generated_project_no_docs / "mkdocs.yml").exists()
         assert not (
-            generated_project_no_docs / ".github" / "workflows" / "docs.yml"
+            generated_project_no_docs / ".github" / "workflows" / "docs.yaml"
         ).exists()
 
 
@@ -150,11 +154,10 @@ class TestMarkdownDocumentation:
 
         # Verify markdown format
         assert content.startswith(
-            "# Test Project"
+            "# Test Project",
         ), "README should start with H1 heading"
-        assert (
-            "[![" in content and "](https://" in content
-        ), "README should have badge links"
+        assert "[![" in content, "README should have badge links"
+        assert "](https://" in content, "README should have badge links"
 
         # Verify required sections
         required_sections = [
@@ -217,7 +220,7 @@ class TestConfiguration:
         workflows_dir = generated_project / ".github" / "workflows"
 
         for workflow_file in workflows_dir.glob("*.y*ml"):
-            with open(workflow_file) as f:
+            with workflow_file.open() as f:
                 try:
                     workflow = yaml.safe_load(f)
                     assert "name" in workflow, f"{workflow_file.name} missing 'name'"

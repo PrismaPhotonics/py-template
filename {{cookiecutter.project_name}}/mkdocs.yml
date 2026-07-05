@@ -27,8 +27,8 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          rendering:
-            show_submodules: no
+          options:
+            show_submodules: false
 
 watch:
   - src/{{cookiecutter.package_name}}
