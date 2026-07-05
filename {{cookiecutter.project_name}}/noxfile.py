@@ -65,7 +65,7 @@ def dev(session: nox.Session) -> None:
 
 
 @nox.session(name="semgrep-fast")
-def semgrep_fast(session):
+def semgrep_fast(session: nox.Session) -> None:
     """Fast code security + Bandit parity on Python files."""
     try:
         session.run("uv", "pip", "install", "semgrep", silent=True, external=True)
@@ -86,7 +86,7 @@ def semgrep_fast(session):
 
 
 @nox.session(name="semgrep-all")
-def semgrep_all(session):
+def semgrep_all(session: nox.Session) -> None:
     """Run all semgrep security scans in sequence."""
     try:
         session.run("uv", "pip", "install", "semgrep", silent=True, external=True)

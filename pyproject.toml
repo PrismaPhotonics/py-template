@@ -34,7 +34,33 @@ source = ["."]
 show_missing = true
 
 [tool.ruff]
-extend-exclude = ["[{][{]cookiecutter.project_name[}][}]/noxfile.py"]
+extend-exclude = ["[{][{]cookiecutter.project_name[}][}]"]
+output-format = "full"
+show-fixes = true
+
+[tool.ruff.lint]
+ignore = [
+  "S101",  # assert
+  "PLR2004",  # magic-value-comparison
+  "PLW2901",  # redefined-loop-name
+  "ISC001",  # single-line-implicit-string-concatenation
+  "SIM105",  # suppressible-exception
+  "SIM108",  # if-else-block-instead-of-if-exp
+  # "D203",  # one blank line before class
+  "D213"  # multi-line-summary-second-line
+]
+select = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"noxfile.py" = ["D", "PTH"]
+"tests/**" = ["S", "ARG001", "ARG002", "ANN"]
+"hooks/**" = ["INP001", "D100"]
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["hooks", "tests"]
 
 [tool.codespell]
 ignore-words-list = " "
