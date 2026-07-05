@@ -13,6 +13,11 @@ application itself: it generates Python projects.
 - `tests/test_template.py` — the template test suite (generates projects with
   `cruft` and asserts on the output).
 
+Note: `AGENTS.md` / `CLAUDE.md` exist at two levels. This root pair documents
+the template repo itself; the pair under `{{cookiecutter.project_name}}/` ships
+into generated projects and must describe the *generated* project (and stay
+valid Jinja).
+
 ## Tooling
 
 - Top-level source (`hooks/`, `tests/`) is linted and tested.
@@ -28,3 +33,7 @@ application itself: it generates Python projects.
 - When editing files under `{{cookiecutter.project_name}}/`, keep the Jinja
   valid and make sure `nox -s tests` still passes — the suite renders the
   template with `cruft` and checks the generated project.
+- When adding, removing, or renaming files under `{{cookiecutter.project_name}}/`,
+  update the assertions in `tests/test_template.py` (essential files, rendering
+  checks). Files gated by the `docs` variable also need
+  `hooks/post_gen_project.py` updated.

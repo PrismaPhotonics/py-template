@@ -29,7 +29,9 @@ $ source .venv/bin/activate
 
 Run tasks via nox (`nox --list-sessions` shows everything available):
 
-- `nox -s tests` — run the test suite with coverage (pytest).
+- `nox -s tests` — run the test suite with coverage (pytest) across all
+  supported Python versions; use e.g. `nox -s tests-3.12 -- -k <expr>` for a
+  single version/subset.
 - `nox -s lint` — run all pre-commit checks (ruff lint, formatting, codespell, …).
 - `nox -s fmt` — apply ruff formatting.
 - `nox -s build` — build the distribution and check it with twine.
@@ -43,7 +45,7 @@ Run tasks via nox (`nox --list-sessions` shows everything available):
 - Ruff is configured with `select = ["ALL"]` in `pyproject.toml`; keep the code
   compliant rather than adding blanket ignores.
 - Tests live in `tests/` and use pytest; maintain coverage for new code.
-- Type hints are expected (ruff flake8-type-checking is enabled).
+- Type hints are expected (ruff `ANN` rules are enabled via `select = ["ALL"]`).
 
 ## Workflow rules
 

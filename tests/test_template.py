@@ -108,6 +108,8 @@ class TestProjectStructure:
         essential = [
             "README.md",
             "CONTRIBUTING.md",
+            "AGENTS.md",
+            "CLAUDE.md",
             "LICENSE",
             "pyproject.toml",
             "noxfile.py",
@@ -186,6 +188,7 @@ class TestMarkdownDocumentation:
         files_to_check = [
             "README.md",
             "CONTRIBUTING.md",
+            "AGENTS.md",
             "pyproject.toml",
         ]
 
